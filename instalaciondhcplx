@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instalación de DHCP en Linux para ETECSA</title>
+
+    <style>
+        <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+
+        .tab {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #0056b3;
+            color: #fff;
+            border-radius: 5px 5px 0 0;
+            cursor: pointer;
+        }
+
+        .tab:hover {
+            background-color: #004080;
+        }
+
+        .content {
+            padding: 20px;
+        }
+
+
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+
+        h2 {
+            font-family: 'Arial', sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        h3 {
+            color: #555;
+            font-size: 18px;
+        }
+    </style>
+</head>
+    </style>
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Instalación de un sistema DHCP en Linux para ETECSA</h1>
+        </div>
+        <div class="tab" id="resumen-tab">Resumen</div>
+        <div class="tab" id="conceptos-tab">Conceptos básicos de redes</div>
+        <div class="tab" id="instalacion-tab">Instalación y configuración</div>
+        <div class="content" id="resumen-content" style="display: none;">
+            <p>En el seminario organizado por ETECSA, se abordarán los aspectos esenciales para la instalación 
+                y configuración de una infraestructura de red segura. Se comenzará con una introducción a los 
+                componentes básicos de la red y los protocolos de seguridad. Luego, se discutirá la planificación 
+                y diseño de una red segura, incluyendo la selección de hardware y software adecuados. 
+                Se detallará la instalación de Linux Debian 12 como sistema base y la configuración inicial del 
+                sistema operativo. Posteriormente, se explicará la instalación y configuración del servicio DHCP 
+                en Debian 12, así como las medidas de seguridad necesarias para proteger este servicio. También se 
+                cubrirán las prácticas de monitoreo y mantenimiento del servicio DHCP y se integrarán medidas de 
+                seguridad adicionales en la infraestructura de red. Finalmente, se considerarán aspectos de 
+                escalabilidad y crecimiento futuro, concluyendo con recomendaciones y mejores prácticas para mantener una red segura y eficiente.</p>
+        </div>
+        <div class="content" id="conceptos-content" style="display: none;">
+            <p><b>Redes:</b> Una red es un conjunto de dispositivos interconectados que pueden comunicarse entre sí. 
+                Los tipos de redes más comunes incluyen LAN (Red de Área Local), WAN (Red de Área Amplia), 
+                MAN (Red de Área Metropolitana) y PAN (Red de Área Personal). </p>
+<p><b>Topologías de Red:</b> La disposición física o lógica de los dispositivos en una red. 
+                Las topologías comunes incluyen estrella, malla, anillo y bus. </p>    
+                
+                <p><b>Modelos de Referencia:</b> 
+                    <p><b><i>Modelo OSI:</i></b> Divide las funciones de red en siete capas 
+                (Fisica, Enlace de Datos, Red, Transporte, Sesión, Presentacióny Aplicación) para estandarizar 
+                las comunicaciones.</p>
+                <p> <b><i>Modelo TCP/IP:</i></b> Un modelo más práctico y simplificado que consta de cuatro capas 
+                (Acceso a la Red, Internet, Transporte y Aplicación).</p>
+        </div>
+        <div class="content" id="instalacion-content" style="display: none;">
+            <p>
+                <b>1. Actualización del sistema:</b> 
+                <p><code>sudo apt-get update</code></p>
+                <p><code>sudo apt-get upgrade</code></p>
+            </p>
+            <p>
+                <b>2. Instalación del paquete ISC DHCP Server</b>
+                <p><code>sudo apt-get install isc-dhcp-server</code></p>
+            </p>
+            <p>
+                <b>3. Configuración del servicio DHCP</b>
+                <p><code>sudo nano /etc/dhcp/dhcpd.conf</code></p>
+                <b><i>3.1 Configuración basica</i></b>
+                <p><code> subnet 192.168.1.0 netmask 255.255.255.0 range 192.168.1.10 192.168.1.100; option routers 192.168.1.1; option domain-name-servers 8.8.8.8, 8.8.4.4; default-lease-time 600;
+                    max-lease-time 7200;</code></p>
+            </p>
+            <p><b>4. Definición de la interfaz de red</b>
+                <p><code>sudo nano /etc/default/isc-dhcp-server</code></p>
+                <b><i> 4.1 Configuración</i></b>
+                <p><code> INTERFACESV4="eth0"</code></p>
+            </p>
+            <p>
+                <b>5. Iniciar y habilitar el servicio DHCP</b> 
+                <p><code>sudo systemctl start isc-dhcp-server</code></p>
+                <p><code>sudo systemctl enable isc-dhcp-server</code></p>
+            </p>
+
+            <p>
+                <b>6. Verificar el estado del servicio</b> 
+                <p><code>sudo systemctl status isc-dhcp-server</code></p>
+            </p>
+
+            <p></p>
+                <b>7. Pruebas y Mantenimiento Pruebas</b>
+                <p><b><i>Pruebas:</i></b> Conecta un dispositivo cliente a la red y verifica que reciba una dirección del servidor DHCP</p>
+                <p><b><i>Mantenimiento:</i></b> Revisa regularmente los logs del servidor DHCP para detectar y solucionar posibles problemas:
+                    <p><code> sudo tail -f /var/log/syslog</code></p>
+                </p>
+            
+            </p>
+         
+
+        </div>
+        <a href="https://docs.google.com/document/d/1i4X2yuYyKR_LGLUCnPmO5aKie_Lzy0Mb/edit?usp=drivesdk&ouid=100275176400766378130&rtpof=true&sd=true" download>
+            <button>Descargar mas información</button>
+          </a>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const resumenTab = document.getElementById('resumen-tab');
+            const conceptosTab = document.getElementById('conceptos-tab');
+            const instalacionTab = document.getElementById('instalacion-tab');
+
+            const resumenContent = document.getElementById('resumen-content');
+            const conceptosContent = document.getElementById('conceptos-content');
+            const instalacionContent = document.getElementById('instalacion-content');
+
+            resumenTab.addEventListener('click', toggleContent(resumenContent));
+            conceptosTab.addEventListener('click', toggleContent(conceptosContent));
+            instalacionTab.addEventListener('click', toggleContent(instalacionContent));
+function toggleContent(content) {
+                return function() {
+                    if (content.style.display === 'none') {
+                        content.style.display = 'block';
+                    } else {
+                        content.style.display = 'none';
+                    }
+                };
+            }
+        });
+    </script>
+</body>
+</html>
